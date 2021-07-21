@@ -44,7 +44,7 @@ public class Commands implements CommandExecutor {
                     ConfigManager.config.set("lastrespawnall", System.currentTimeMillis());
                     Bukkit.getOnlinePlayers().forEach(player->{
                         if(player.getGameMode() == GameMode.SPECTATOR)
-                            player.kickPlayer("您已被管理员复活，请重新加入极限生存主题服务器开始新征程。");
+                            player.kickPlayer("神秘的力量拂过了大地，你的灵魂被唤醒，请重新进入梦境以开始新的征程。");
                     });
                     sender.sendMessage("玩家全部复活成功");
                     ConfigManager.saveConfig();
