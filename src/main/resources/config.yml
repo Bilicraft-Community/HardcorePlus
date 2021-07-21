@@ -17,10 +17,10 @@ PermaBanOnFinalDeathEnabled: true # perma ban a player when they run out of max 
 PermaBanText: "你已被噩梦所环绕，永久的沉眠于此"
 
 AnnounceDeathEnabled: true # announce when someone respawn/dies?
-AnnounceDeathText: "%PLAYER% died." # <player> died.
+AnnounceDeathText: "%PLAYER% 沉溺于噩梦之中无法自拔." # <player> died.
 
-PermaDeathServerText: " 没能再逃出噩梦..."
-PermaDeathPlayerText: "你永久的沉眠于噩梦之中了..."
+PermaDeathServerText: " 被噩梦所吞噬，永远的沉眠于此..."
+PermaDeathPlayerText: "你已永远的沉眠于噩梦之中了，祝愿世间噩梦不再..."
 
 DragonKillRestoresMaxHealthEnabled: true # restore max health to all players in The End when dragon dies
 DragonKillText: "你的噩梦结束了，传送门已开启，现在是时候离开这里了..."
