@@ -20,7 +20,7 @@ AnnounceDeathEnabled: true # announce when someone respawn/dies?
 AnnounceDeathText: "%PLAYER% 沉溺于噩梦之中无法自拔." # <player> died.
 
 PermaDeathServerText: " 被噩梦所吞噬，永远的沉眠于此..."
-PermaDeathPlayerText: "你已永远的沉眠于噩梦之中了，祝愿世间噩梦不再..."
+PermaDeathPlayerText: "你永远的沉眠于噩梦之中，愿世间噩梦不再..."
 
 DragonKillRestoresMaxHealthEnabled: true # restore max health to all players in The End when dragon dies
 DragonKillText: "你的噩梦结束了，传送门已开启，现在是时候离开这里了..."
