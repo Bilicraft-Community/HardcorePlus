@@ -2,14 +2,14 @@ name: HardcorePlus
 version: 1.0.0
 main: me.griimnak.hardcoreplus.HardcorePlus
 api-version: 1.13
-authors: [griimnak]
+authors: [ griimnak ]
 description: Enhances the vanilla Minecraft hardcore experience.
 website: https://griimnak.me
 commands:
   hardcoreplus:
     description: Administrative commands for HardcorePlus.
     usage: /<command>
-    aliases: [hcp]
+    aliases: [ hcp ]
 permissions:
   hardcoreplus.admin:
     description: Admin commands like setting max hp for players, etc.

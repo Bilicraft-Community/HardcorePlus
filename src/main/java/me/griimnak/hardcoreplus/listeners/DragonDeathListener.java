@@ -12,7 +12,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 
 public class DragonDeathListener implements Listener {
-    private HardcorePlus plugin;
+    private final HardcorePlus plugin;
 
     public DragonDeathListener(HardcorePlus plugin) {
         this.plugin = plugin;
@@ -21,12 +21,14 @@ public class DragonDeathListener implements Listener {
     @EventHandler
     public void onEnderDragonKill(EntityDeathEvent event) {
         // if enabled in config
-        if(ConfigManager.config.getBoolean("DragonKillRestoresMaxHealthEnabled")) {
-            if(!(event.getEntity() instanceof EnderDragon)) { return; }
+        if (ConfigManager.config.getBoolean("DragonKillRestoresMaxHealthEnabled")) {
+            if (!(event.getEntity() instanceof EnderDragon)) {
+                return;
+            }
             // for players in server
-            for(Player player: plugin.getServer().getOnlinePlayers()) {
+            for (Player player : plugin.getServer().getOnlinePlayers()) {
                 // if present in the end when dragon is killed
-                if(player.getWorld().getEnvironment().equals(World.Environment.THE_END)) {
+                if (player.getWorld().getEnvironment().equals(World.Environment.THE_END)) {
                     player.sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + ConfigManager.config.getString("DragonKillText"));
                     // restore max health
                     player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(20.0D);

@@ -9,7 +9,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public final class HardcorePlus extends JavaPlugin {
     // since disabling the plugin is buggy, i made my own state handler.
-    State state = new State();
+    final State state = new State();
 
     @Override
     public void onEnable() {
@@ -38,7 +38,7 @@ public final class HardcorePlus extends JavaPlugin {
 
     private boolean checkHardcore() {
         // if server is not hardcore
-        if(!getServer().isHardcore()) {
+        if (!getServer().isHardcore()) {
             // warn
             getLogger().warning("Please set hardcore to true in server.properties!");
             // disable plugin
