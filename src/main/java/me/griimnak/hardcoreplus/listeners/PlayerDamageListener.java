@@ -79,7 +79,6 @@ public class PlayerDamageListener implements Listener {
                 if (ConfigManager.config.getBoolean("AnnounceDeathEnabled")) {
 
                     EntityDamageEvent.DamageCause cause = (ConfigManager.config.getBoolean("CustomDeathMessagesEnabled")) ? event.getCause() : null;
-
                     if (cause == EntityDamageEvent.DamageCause.BLOCK_EXPLOSION) {
                         broadcast(GetConfigString("dmsg_BlockExplosion").replaceAll("%PLAYER%", damaged.getDisplayName()));
                     } else if (cause == EntityDamageEvent.DamageCause.CONTACT) {
@@ -128,6 +127,8 @@ public class PlayerDamageListener implements Listener {
                         broadcast(GetConfigString("dmsg_Wither").replaceAll("%PLAYER%", damaged.getDisplayName()));
                     } else if (cause == EntityDamageEvent.DamageCause.ENTITY_ATTACK) {
                         broadcast(GetConfigString("dmsg_EntityAttack").replaceAll("%PLAYER%", damaged.getDisplayName()));
+                    } else if (cause == EntityDamageEvent.DamageCause.FREEZE) {
+                        broadcast(GetConfigString("dmsg_Freeze").replaceAll("%PLAYER%", damaged.getDisplayName()));
                     } else {
                         broadcast(GetConfigString("AnnounceDeathText").replaceAll("%PLAYER%", damaged.getDisplayName()));
                     }

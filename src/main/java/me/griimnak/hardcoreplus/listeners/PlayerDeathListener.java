@@ -13,7 +13,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Properties;
 
 public class PlayerDeathListener implements Listener {
@@ -46,8 +49,9 @@ public class PlayerDeathListener implements Listener {
         if (ConfigManager.config.getLong("deaths." + event.getPlayer().getUniqueId() + ".time") <= lastRespawnAll) {
             event.getPlayer().teleport(Bukkit.getWorlds().get(0).getSpawnLocation());
             event.getPlayer().setGameMode(GameMode.SURVIVAL);
-            ConfigManager.config.set("deaths." + event.getPlayer().getUniqueId(),null);
+            ConfigManager.config.set("deaths." + event.getPlayer().getUniqueId(), null);
             ConfigManager.saveConfig();
+            event.getPlayer().sendMessage(ChatColor.GREEN + "神秘的力量使你忘记了过去，是时候再一次探索这个世界了!");
         }
     }
 

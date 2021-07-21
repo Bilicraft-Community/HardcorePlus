@@ -73,7 +73,7 @@ public class Commands implements CommandExecutor {
                         } else {
                             Player player = getServer().getPlayer(args[1]);
                             if(player == null){
-                                sender.sendMessage("Player not online");
+                                sender.sendMessage(ChatColor.RED+"Player not online.");
                                 return true;
                             }
                             player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(max_hp);
