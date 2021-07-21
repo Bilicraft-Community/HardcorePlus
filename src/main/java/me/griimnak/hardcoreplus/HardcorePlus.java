@@ -10,9 +10,11 @@ import org.bukkit.plugin.java.JavaPlugin;
 public final class HardcorePlus extends JavaPlugin {
     // since disabling the plugin is buggy, i made my own state handler.
     final State state = new State();
+    public static HardcorePlus instance;
 
     @Override
     public void onEnable() {
+        instance = this;
         init();
     }
 
@@ -28,6 +30,7 @@ public final class HardcorePlus extends JavaPlugin {
         // enforce hardcore
         if (checkHardcore()) {
             regEvents();
+            new DarknessWatcher().runTaskTimer(this,0,5);
         } else {
             getLogger().warning("Hardcore mode not set, not registering event listeners.");
         }

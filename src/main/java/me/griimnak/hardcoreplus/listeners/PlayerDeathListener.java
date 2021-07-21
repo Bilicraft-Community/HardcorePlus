@@ -2,14 +2,13 @@ package me.griimnak.hardcoreplus.listeners;
 
 import me.griimnak.hardcoreplus.HardcorePlus;
 import me.griimnak.hardcoreplus.config.ConfigManager;
+import org.bukkit.*;
 import org.bukkit.BanList.Type;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 
@@ -55,6 +54,7 @@ public class PlayerDeathListener implements Listener {
         }
     }
 
+
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
         Player player = event.getEntity();
@@ -74,6 +74,17 @@ public class PlayerDeathListener implements Listener {
                 plugin.getServer().getBanList(Type.NAME).addBan(player.getName(), ChatColor.RED + ConfigManager.config.getString("PermaBanText") + ChatColor.RESET, null, "HardcorePlus");
                 player.kickPlayer(ChatColor.RED + ConfigManager.config.getString("PermaBanText") + ChatColor.RESET);
             }, 10);
+        }
+    }
+
+    @EventHandler
+    public void onPlayerJoin(BlockPlaceEvent event) {
+        if(event.getBlockPlaced().getType() == Material.TORCH ||event.getBlockPlaced().getType() == Material.WALL_TORCH){
+            event.getBlockPlaced().getWorld().spawnParticle(Particle.CLOUD,event.getBlockPlaced().getLocation().add(0.5,0.7,0.5),2, 0.0d,0.0d,0.0d,0.01d);
+            event.getBlockPlaced().getWorld().spawnParticle(Particle.SMOKE_NORMAL,event.getBlockPlaced().getLocation().add(0.5,0.7,0.5),2, 0.0d,0.0d,0.0d,0.01d);
+            event.getBlockPlaced().getWorld().spawnParticle(Particle.BLOCK_CRACK,event.getBlockPlaced().getLocation().add(0.5,0.5,0.5),2,0.0d,0.0d,0.0d,event.getBlockPlaced().getBlockData());
+            event.getBlockPlaced().getWorld().playSound(event.getBlockPlaced().getLocation(),Sound.ENTITY_GENERIC_EXPLODE,0.1f,0.0f);
+            event.getBlockPlaced().setType(Material.AIR);
         }
     }
 
