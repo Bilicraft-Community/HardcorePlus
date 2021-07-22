@@ -1,12 +1,10 @@
 package me.griimnak.hardcoreplus.listeners;
 
+import me.griimnak.hardcoreplus.DescParseTickFormat;
 import me.griimnak.hardcoreplus.HardcorePlus;
 import me.griimnak.hardcoreplus.config.ConfigManager;
+import org.bukkit.*;
 import org.bukkit.BanList.Type;
-import org.bukkit.ChatColor;
-import org.bukkit.Effect;
-import org.bukkit.Material;
-import org.bukkit.Particle;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.ExperienceOrb;
@@ -15,6 +13,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -269,6 +268,16 @@ public class PlayerDamageListener implements Listener {
                             }
                         }, 20);
                     }
+                }
+                World rworld;
+                if (damaged.getBedSpawnLocation() != null) {
+                     rworld = damaged.getBedSpawnLocation().getWorld();
+                } else {
+                     rworld = damaged.getServer().getWorlds().get(0);
+                }
+                long gameTime = rworld.getTime();
+                if (gameTime > 10000 && damaged.getLocation().getBlock().getLightLevel() < 6) {
+                    damaged.kickPlayer(ChatColor.YELLOW + "\n由于现在为夜间且您的复活位置没有光源，为了避免重复死亡，您已被强制下线。\n现在是游戏时间的 "+DescParseTickFormat.format24(gameTime)+"\n您可以选择等待天亮或立刻重新加入。");
                 }
 
             }

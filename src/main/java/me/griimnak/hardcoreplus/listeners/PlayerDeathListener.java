@@ -1,9 +1,11 @@
 package me.griimnak.hardcoreplus.listeners;
 
+import com.google.common.collect.ImmutableList;
+import me.griimnak.hardcoreplus.DescParseTickFormat;
 import me.griimnak.hardcoreplus.HardcorePlus;
 import me.griimnak.hardcoreplus.config.ConfigManager;
-import org.bukkit.*;
 import org.bukkit.BanList.Type;
+import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -11,6 +13,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerLoginEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -40,7 +45,25 @@ public class PlayerDeathListener implements Listener {
     }
 
     @EventHandler
+    public void onPlayerLogin(PlayerLoginEvent event) {
+        if (!Bukkit.getOfflinePlayer(event.getPlayer().getUniqueId()).hasPlayedBefore()) {
+            long gameTime = event.getPlayer().getWorld().getTime();
+            if (gameTime > 10000) {
+                event.disallow(PlayerLoginEvent.Result.KICK_OTHER, "\n为避免出生即死亡，新玩家只能在游戏时间的 6:00-12:00 之间加入。\n现在游戏时间: " + DescParseTickFormat.format24(gameTime));
+            }
+        }
+    }
+
+    @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
+        if(!event.getPlayer().hasPlayedBefore()){
+            ItemStack stack = new ItemStack(Material.FIRE_CHARGE,2);
+            ItemMeta meta = stack.getItemMeta();
+            meta.setDisplayName(ChatColor.YELLOW+"应急火种");
+            meta.setLore(ImmutableList.of(ChatColor.WHITE+""+ChatColor.ITALIC+"你非常清楚只有在迫不得已的时候才能使用它..."));
+            stack.setItemMeta(meta);
+            event.getPlayer().getInventory().addItem(stack);
+        }
         if (event.getPlayer().getGameMode() != GameMode.SPECTATOR) {
             return;
         }
@@ -79,12 +102,13 @@ public class PlayerDeathListener implements Listener {
 
     @EventHandler
     public void onPlayerJoin(BlockPlaceEvent event) {
-        if(event.getBlockPlaced().getType() == Material.TORCH ||event.getBlockPlaced().getType() == Material.WALL_TORCH){
-            event.getBlockPlaced().getWorld().spawnParticle(Particle.CLOUD,event.getBlockPlaced().getLocation().add(0.5,0.7,0.5),2, 0.0d,0.0d,0.0d,0.01d);
-            event.getBlockPlaced().getWorld().spawnParticle(Particle.SMOKE_NORMAL,event.getBlockPlaced().getLocation().add(0.5,0.7,0.5),2, 0.0d,0.0d,0.0d,0.01d);
-            event.getBlockPlaced().getWorld().spawnParticle(Particle.BLOCK_CRACK,event.getBlockPlaced().getLocation().add(0.5,0.5,0.5),2,0.0d,0.0d,0.0d,event.getBlockPlaced().getBlockData());
-            event.getBlockPlaced().getWorld().playSound(event.getBlockPlaced().getLocation(),Sound.ENTITY_GENERIC_EXPLODE,0.1f,0.0f);
+        if (event.getBlockPlaced().getType() == Material.TORCH || event.getBlockPlaced().getType() == Material.WALL_TORCH) {
+          //  event.getBlockPlaced().getWorld().spawnParticle(Particle.CLOUD, event.getBlockPlaced().getLocation().add(0.5, 0.7, 0.5), 2, 0.0d, 0.0d, 0.0d, 0.01d);
+            event.getBlockPlaced().getWorld().spawnParticle(Particle.SMOKE_NORMAL, event.getBlockPlaced().getLocation().add(0.5, 0.7, 0.5), 2, 0.0d, 0.0d, 0.0d, 0.01d);
+            event.getBlockPlaced().getWorld().spawnParticle(Particle.BLOCK_CRACK, event.getBlockPlaced().getLocation().add(0.5, 0.5, 0.5), 2, 0.0d, 0.0d, 0.0d, event.getBlockPlaced().getBlockData());
+            event.getBlockPlaced().getWorld().playSound(event.getBlockPlaced().getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 0.1f, 0.0f);
             event.getBlockPlaced().setType(Material.AIR);
+            event.getPlayer().sendMessage(ChatColor.YELLOW + "你尝试将火把放在地上，但一个黑影掠过并将其夺走了");
         }
     }
 
