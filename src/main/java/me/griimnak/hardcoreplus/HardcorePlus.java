@@ -30,7 +30,7 @@ public final class HardcorePlus extends JavaPlugin {
         // enforce hardcore
         if (checkHardcore()) {
             regEvents();
-            new DarknessWatcher().runTaskTimer(this,0,5);
+            //new DarknessWatcher().runTaskTimer(this,0,5);
         } else {
             getLogger().warning("Hardcore mode not set, not registering event listeners.");
         }
