@@ -63,6 +63,10 @@ public class PlayerDeathListener implements Listener {
             meta.setLore(ImmutableList.of(ChatColor.WHITE+""+ChatColor.ITALIC+"你非常清楚只有在迫不得已的时候才能使用它..."));
             stack.setItemMeta(meta);
             event.getPlayer().getInventory().addItem(stack);
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "qa give deagle "+event.getPlayer().getName());
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "qa give 9mm "+event.getPlayer().getName());
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "qa give 9mm "+event.getPlayer().getName());
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "qa give 9mm "+event.getPlayer().getName());
         }
         if (event.getPlayer().getGameMode() != GameMode.SPECTATOR) {
             return;
