@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.inventory.ItemStack;
@@ -232,6 +233,16 @@ public class PlayerDamageListener implements Listener {
                 // re saturate
                 damaged.setSaturation(5);
                 damaged.setFoodLevel(20);
+                damaged.setNoDamageTicks(20*10);
+                event.setDamage(0.0);
+                for (PotionEffectType value : PotionEffectType.values()) {
+                    damaged.removePotionEffect(value);
+                }
+                if(event instanceof EntityDamageByEntityEvent){
+                    if(!(((EntityDamageByEntityEvent) event).getDamager() instanceof Player)){
+                        ((EntityDamageByEntityEvent) event).getDamager().remove();
+                    }
+                }
 
                 // respawn
                 plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
