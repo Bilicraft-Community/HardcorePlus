@@ -214,7 +214,6 @@ public class PlayerDeathListener implements Listener {
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
         Player player = event.getEntity();
-        Bukkit.broadcastMessage(event.getEntity().getDisplayName()+" 剩余最大生命值: "+player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue()+"@"+player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
         event.setDeathMessage(ChatColor.RED + "" + ChatColor.BOLD + player.getName() + ConfigManager.config.getString("PermaDeathServerText"));
         player.sendMessage(ChatColor.DARK_GRAY + "" + ChatColor.ITALIC + ConfigManager.config.getString("PermaDeathPlayerText"));
 
@@ -234,7 +233,8 @@ public class PlayerDeathListener implements Listener {
         }
         String sourceTracking = getSource(event.getEntity().getLastDamageCause());
         String damage = new Formatter().format("%.2f", event.getEntity().getLastDamageCause().getFinalDamage()).toString();
-        Bukkit.broadcastMessage(event.getEntity().getDisplayName() + " 死于 " + sourceTracking + " 伤害: " + damage);
+        plugin.getLogger().info("Damage: "+damage);
+        Bukkit.broadcastMessage(event.getEntity().getDisplayName() + " 的噩梦被" + sourceTracking + "终结，永远的沉眠在此... 剩余梦能: "+(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue()- ConfigManager.config.getDouble("LoseMaxHealthOnRespawnAmmount"))+", 最后一次攻击伤害: "+damage);
     }
 
     @EventHandler
@@ -246,6 +246,16 @@ public class PlayerDeathListener implements Listener {
             event.getBlockPlaced().getWorld().playSound(event.getBlockPlaced().getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 0.1f, 0.0f);
             event.getBlockPlaced().setType(Material.AIR);
             event.getPlayer().sendMessage(ChatColor.YELLOW + "你尝试将火把放在地上，但一个黑影掠过并将其夺走了");
+        }
+        if(event.getBlockPlaced().getWorld().getEnvironment() == World.Environment.THE_END){
+            if(event.getBlockPlaced().getWorld().getEnderDragonBattle() != null){
+                if(event.getBlockPlaced().getWorld().getEnderDragonBattle().getEnderDragon() != null){
+                    if(Math.abs(event.getBlockPlaced().getLocation().getBlockX()) > 650 || Math.abs(event.getBlockPlaced().getLocation().getBlockZ()) > 650){
+                        event.setCancelled(true);
+                        event.getPlayer().sendMessage(ChatColor.RED+"更远的地方被一种力量封印住了...");
+                    }
+                }
+            }
         }
     }
 

@@ -181,6 +181,14 @@ public class PlayerDamageListener implements Listener {
                         ((Enderman) nearbyEntity).setTarget((LivingEntity) event.getDamager());
                     }
                 }
+                if(random.nextInt( 5) == 0) {
+                    for (int i = 0; i <= event.getFinalDamage(); i++) {
+                        if(random.nextInt(2) == 0) {
+                            Enderman enderman = (Enderman) event.getDamager().getWorld().spawnEntity(event.getDamager().getLocation(), EntityType.ENDERMAN);
+                            enderman.setTarget((LivingEntity) event.getDamager());
+                        }
+                    }
+                }
             }
             if (dragon.getHealth() < 1000) {
                 event.setCancelled(true);
@@ -193,6 +201,16 @@ public class PlayerDamageListener implements Listener {
             for (Entity nearbyEntity : dragon.getNearbyEntities(50, 50, 50)) {
                 if (nearbyEntity instanceof Player) {
                     nearbyEntity.teleport(nearbyEntity.getLocation().clone().add(0, 100, 0));
+                }
+            }
+        }
+        if(event.getDamager() instanceof Player) {
+            if(random.nextInt( 5) == 0) {
+                for (int i = 0; i <= event.getFinalDamage(); i++) {
+                    if(random.nextInt(2) == 0) {
+                        Enderman enderman = (Enderman) event.getDamager().getWorld().spawnEntity(event.getDamager().getLocation(), EntityType.ENDERMAN);
+                        enderman.setTarget((LivingEntity) event.getDamager());
+                    }
                 }
             }
         }
@@ -305,7 +323,6 @@ public class PlayerDamageListener implements Listener {
                     } else {
                         broadcast(GetConfigString("AnnounceDeathText").replaceAll("%PLAYER%", damaged.getDisplayName()));
                     }
-                    broadcast(damaged.getDisplayName() + " 死于 " + sourceTracking + " 伤害: " + damage);
                 }
 
                 // drop loot
@@ -400,7 +417,7 @@ public class PlayerDamageListener implements Listener {
                 } else {
                     damaged.setHealth(max_hp);
                 }
-                broadcast(damaged.getDisplayName()+" 剩余最大生命值: "+damaged.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue()+"@"+damaged.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
+                Bukkit.broadcastMessage(damaged.getDisplayName() + " 被" + sourceTracking + "送入更深层的梦境. 剩余梦能: "+(damaged.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue()- ConfigManager.config.getDouble("LoseMaxHealthOnRespawnAmmount"))+", 最后一次攻击伤害: "+damage);
 
                 // re saturate
                 damaged.setSaturation(5);
@@ -460,17 +477,19 @@ public class PlayerDamageListener implements Listener {
                         }, 20);
                     }
                 }
-                World rworld;
-                if (damaged.getBedSpawnLocation() != null) {
-                    rworld = damaged.getBedSpawnLocation().getWorld();
-                } else {
-                    rworld = damaged.getServer().getWorlds().get(0);
-                }
-                long gameTime = rworld.getTime();
-                if (gameTime > 10000 && damaged.getLocation().getBlock().getLightLevel() < 6) {
-                    damaged.kickPlayer(ChatColor.YELLOW + "\n由于现在为夜间且您的复活位置没有光源，为了避免重复死亡，您已被强制下线。\n现在是游戏时间的 " + DescParseTickFormat.format24(gameTime) + "\n您可以选择等待天亮或立刻重新加入。");
-                }
+                Bukkit.getScheduler().runTaskLater(plugin,()->{
+                    World rworld;
+                    if (damaged.getBedSpawnLocation() != null) {
+                        rworld = damaged.getBedSpawnLocation().getWorld();
+                    } else {
+                        rworld = damaged.getServer().getWorlds().get(0);
+                    }
+                    long gameTime = rworld.getTime();
+                    if (gameTime > 10000 && damaged.getLocation().getBlock().getLightLevel() < 6) {
+                        damaged.kickPlayer(ChatColor.YELLOW + "\n由于现在为夜间且您的复活位置没有光源，为了避免重复死亡，您已被强制下线。\n现在是游戏时间的 " + DescParseTickFormat.format24(gameTime) + "\n您可以选择等待天亮或立刻重新加入。");
+                    }
 
+                }, 40L);
             }
         }
 
