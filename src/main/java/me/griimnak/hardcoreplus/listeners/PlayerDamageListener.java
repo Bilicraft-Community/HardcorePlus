@@ -417,7 +417,7 @@ public class PlayerDamageListener implements Listener {
                 } else {
                     damaged.setHealth(max_hp);
                 }
-                Bukkit.broadcastMessage(damaged.getDisplayName() + " 被" + sourceTracking + "送入更深层的梦境. 剩余梦能: "+(damaged.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue()- ConfigManager.config.getDouble("LoseMaxHealthOnRespawnAmmount"))+", 最后一次攻击伤害: "+damage);
+                Bukkit.broadcastMessage(damaged.getDisplayName() + " 被" + sourceTracking + "送入更深层的梦境. 剩余梦能: "+damaged.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue()+", 最后一次攻击伤害: "+damage);
 
                 // re saturate
                 damaged.setSaturation(5);
